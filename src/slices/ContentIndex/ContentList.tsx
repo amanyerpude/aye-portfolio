@@ -24,7 +24,10 @@ export default function ContentList({
   viewMoreText = "Read More",
 }: ContentListProps) {
   const component = useRef(null);
-  const itemsRef = useRef<Array<HTMLLIElement | null>>([]);
+  const itemsRef = useRef<Array<HTMLLIElement | null>>(Array(items.length).fill(null));
+  const handleRef = (el: HTMLLIElement | null, index: number) => {
+    itemsRef.current[index] = el;
+  };
 
   const revealRef = useRef(null);
   const [currentItem, setCurrentItem] = useState<null | number>(null);
@@ -147,7 +150,7 @@ export default function ContentList({
                 key={index}
                 onMouseEnter={() => onMouseEnter(index)}
                 className="list-item opacity-0"
-                ref={(el) => (itemsRef.current[index] = el)}
+                ref={(el) => handleRef(el, index)}
               >
                 <Link
                   href={`${urlPrefix}/${post.uid}`}
